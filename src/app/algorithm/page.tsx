@@ -1,20 +1,23 @@
 import { connectToDatabase } from "@/util/database";
 import React from "react";
 import MarkDownPost from "./components/MarkDownPost";
-import { Button } from "@mui/material";
-const page = async () => {
-  // let { db } = await connectToDatabase();
-  // let result: string = await db
-  //   .collection("question")
-  //   .find()
-  //   .toArray()
-  //   .then((e: any[]) => e[0].markdown);
+import Board from "./Board";
+import { Post } from "./type";
 
-  return (
-    <div>
-      <Button>asd </Button>
-    </div>
-  );
+const page = async () => {
+  let { db } = await connectToDatabase();
+  let rows: Post[] = await db
+    .collection("Post")
+    .find()
+    .toArray()
+    .then((list: any) => {      
+      return list.map((e: any) => {
+        e._id = e._id.toString();
+        return e
+      });
+    });
+
+  return <Board list={rows} />;
 };
 
 export default page;

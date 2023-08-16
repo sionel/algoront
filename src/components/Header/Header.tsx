@@ -12,7 +12,7 @@ const Header = () => {
           sx={{ color: "#444", mr: 2, transform: "translateY(-2px)" }}
         />
         <Typography variant="h6" noWrap component="div" color="black">
-          Next.js App Router
+          절대 디자인 보지마
         </Typography>
       </Toolbar>
     </AppBar>

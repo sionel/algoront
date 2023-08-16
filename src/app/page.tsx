@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div className={styles.main}>
       <div className={styles.text}>
-        이것저것 잡동사니
+        게시판을 가냥한 각각의 메뉴
       </div>
     </div>
   );

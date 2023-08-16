@@ -1,8 +1,7 @@
 import { MongoClient, Db } from "mongodb";
 
-const uri =
-  "mongodb+srv://coo:zxc123@algoront.mhuv85p.mongodb.net/?retryWrites=true&w=majority"; // MongoDB URI
-const dbName = "algoront"; // MongoDB 데이터베이스 이름
+const url = process.env.DATABASE_URI as string;
+const dbName = process.env.DATABASE_NAME as string;
 
 let cachedClient: { client: MongoClient; db: Db } | null = null;
 
@@ -11,7 +10,7 @@ export async function connectToDatabase() {
     return cachedClient;
   }
 
-  const client = new MongoClient(uri);
+  const client = new MongoClient(url);
 
   try {
     await client.connect();

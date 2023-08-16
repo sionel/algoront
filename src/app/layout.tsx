@@ -30,7 +30,7 @@ export default function RootLayout({
               flexGrow: 1,
               bgcolor: "background.default",
               ml: "240px",
-              mt: ["48px", "56px", "64px"],
+              mt: "64px",
               p: 3,
             }}
           >

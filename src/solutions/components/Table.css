@@ -1,0 +1,15 @@
+.default {
+  background-color: #f7f7f7;
+}
+.selected {
+  background-color: #ddeeff;
+}
+.done {
+  background-color: #c8e6c9;
+}
+.processing {
+  background-color: #fff59d;
+}
+.error {
+  background-color: #ffcdd2;
+}
