@@ -1,8 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "../components/Header/Header";
-import Drawer from "../components/Drawer/Drawer";
+import Header from "../components/Header";
+import Drawer from "../components/Drawer";
 import Box from "@mui/material/Box";
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry";
 
