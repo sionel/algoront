@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { Post } from "../type";
+import { Post } from "../../../types/post";
 import { connectToDatabase } from "@/util/database";
 import { ObjectId } from "mongodb";
 import Baek1931 from "@/solutions/baek1931/Baek1931";

@@ -1,8 +1,7 @@
 import { connectToDatabase } from "@/util/database";
 import React from "react";
-import MarkDownPost from "./components/MarkDownPost";
 import Board from "./Board";
-import { Post } from "./type";
+import { Post } from "../../types";
 
 const page = async () => {
   let { db } = await connectToDatabase();
