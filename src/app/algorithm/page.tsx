@@ -6,13 +6,13 @@ import { Post } from "../../types";
 const page = async () => {
   let { db } = await connectToDatabase();
   let rows: Post[] = await db
-    .collection("Post")
+    .collection("posts")
     .find()
     .toArray()
-    .then((list: any) => {      
+    .then((list: any) => {
       return list.map((e: any) => {
         e._id = e._id.toString();
-        return e
+        return e;
       });
     });
 

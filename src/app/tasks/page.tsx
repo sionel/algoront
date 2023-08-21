@@ -22,7 +22,7 @@ import Task from "./Task";
 const Tasks = async () => {
   let { db } = await connectToDatabase();
   let tasks: ClientTask[] = await db
-    .collection<ApiTask>("Task")
+    .collection<ApiTask>("tasks")
     .find()
     .toArray()
     .then((list) => list.map((task) => convertApiDataToClientData(task)));
