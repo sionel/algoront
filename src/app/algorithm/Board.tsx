@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import MarkDownPost from "./components/MarkDownPost";
 import {
   Button,
   Paper,
@@ -14,21 +13,21 @@ import {
   Box,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { Post } from "../../types/post";
+import { ClientPost, Post } from "../../types/post";
 
 interface BoardProps {
-  list: Post[];
+  posts: ClientPost[];
 }
 
-const Board: React.FC<BoardProps> = ({ list }) => {
+const Board: React.FC<BoardProps> = ({ posts }) => {
   const [page, setPage] = useState(0);
   const router = useRouter();
   const [rows, setRows] = useState<Post[]>([]);
 
   useEffect(() => {
-    const rows = list.slice(page, page + 10);
+    const rows = posts.slice(page, page + 10);
     setRows(rows);
-  }, [page, list]);
+  }, [page, posts]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -54,23 +53,23 @@ const Board: React.FC<BoardProps> = ({ list }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {list.map((row) => (
+            {posts.map((post) => (
               <TableRow
-                key={row._id}
+                key={post.id}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
                   cursor: "pointer",
                 }}
                 onClick={() => {
-                  router.push(`/algorithm/${row.path}`);
+                  router.push(`/algorithm/${post.path}`);
                 }}
               >
-                <TableCell align="center">{row.index}</TableCell>
-                <TableCell align="center">{row.source}</TableCell>
+                <TableCell align="center">{post.index}</TableCell>
+                <TableCell align="center">{post.source}</TableCell>
                 <TableCell component="th" scope="row">
-                  {row.title}
+                  {post.title}
                 </TableCell>
-                <TableCell align="center">{row.difficulty}</TableCell>
+                <TableCell align="center">{post.difficulty}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -79,7 +78,7 @@ const Board: React.FC<BoardProps> = ({ list }) => {
       <TablePagination
         rowsPerPageOptions={[10]}
         component="div"
-        count={list.length}
+        count={posts.length}
         rowsPerPage={10}
         page={page}
         onPageChange={handleChangePage}
