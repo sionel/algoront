@@ -15,6 +15,7 @@ import Baek1931 from "@/solutions/baek1931/Baek1931";
 import { EnhancedComponentA } from "@/solutions";
 import MarkDownPost from "@/components/MarkDownPost";
 import ProblemDescription from "./ProblemDescription";
+import CommentSection from "./CommentSection";
 
 const Solution = async (props: { params: { id: any } }) => {
 
@@ -32,6 +33,8 @@ const Solution = async (props: { params: { id: any } }) => {
       <ProblemDescription post={question.md} />
       <Divider />
       <h2>풀이법</h2>
+      <Divider />
+      <CommentSection />
       {/* <Test11 problemId="123" /> */}
       {/* <EnhancedComponentA />
       <Baek1931 /> */}
