@@ -1,20 +1,16 @@
 import { Task } from "@/types";
 import { Comment } from "@/types/comment";
 import { connectToDatabase } from "@/util/database";
+import { ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
-  const { questionId, username, password, text } = await request.json();
-
-  const comment: Comment = {
-    questionId,
-    username,
-    password,
-    text,
-  };
+export async function DELETE(
+  request: Request,
+  { params: { id } }: { params: { id: string } }
+) {
   const { db } = await connectToDatabase();
-  const result = await db.collection("comments").insertOne(comment);
+  const result = await db.collection("comments").deleteOne({_id: new ObjectId(id)})
   if (result.acknowledged) {
     return NextResponse.json({ success: "success" }, { status: 200 });
   } else {

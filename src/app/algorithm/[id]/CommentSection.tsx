@@ -5,11 +5,11 @@ import { ApiComment, ClientComment } from "@/types/comment";
 import { connectToDatabase, convertApiDataToClientData } from "@/util/database";
 import CommentList from "./CommentList";
 
-const CommentSection = async () => {
+const CommentSection = async ({ questionId }: { questionId: string }) => {
   let { db } = await connectToDatabase();
   let comments: ClientComment[] = await db
     .collection<ApiComment>("comments")
-    .find()
+    .find({ questionId })
     .toArray()
     .then((list) => list.map((comment) => convertApiDataToClientData(comment)));
 

@@ -2,9 +2,10 @@ import { ObjectId } from "mongodb";
 import { ApiData, ClientData } from ".";
 
 export type Comment = {
-  id: string;
-  pw: string;
-  text : string
+  questionId: string;
+  username: string;
+  password: string;
+  text: string;
 };
 
 export type ApiComment = ApiData<Comment>;

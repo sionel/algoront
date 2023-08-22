@@ -17,12 +17,12 @@ import MarkDownPost from "@/components/MarkDownPost";
 import ProblemDescription from "./ProblemDescription";
 import CommentSection from "./CommentSection";
 
-const Solution = async (props: { params: { id: any } }) => {
+const Solution = async ({params:{id}}: { params: { id: any } }) => {
 
   let { db } = await connectToDatabase();
   let question: any = await db
     .collection("question")
-    .findOne({ id: props.params.id })
+    .findOne({ id })
     .then((e: any) => {
       e._id = e._id.toString();
       return e;
@@ -34,7 +34,7 @@ const Solution = async (props: { params: { id: any } }) => {
       <Divider />
       <h2>풀이법</h2>
       <Divider />
-      <CommentSection />
+      <CommentSection questionId={id} />
       {/* <Test11 problemId="123" /> */}
       {/* <EnhancedComponentA />
       <Baek1931 /> */}
