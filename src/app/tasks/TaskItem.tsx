@@ -3,12 +3,14 @@ import { ClientTask } from "@/types";
 import {
   Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   ListItem,
-  ListItemSecondaryAction,
   ListItemText,
 } from "@mui/material";
 import { ObjectId } from "mongodb";
-import React from "react";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRouter } from "next/navigation";
 
@@ -17,7 +19,8 @@ interface TastItem {
 }
 const TaskItem: React.FC<TastItem> = ({ task: { id, isCheck, title } }) => {
   const router = useRouter();
-  const handleCheckChange = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const handleCheck = () => {
     fetch(`/api/task/${id}`, {
       method: "PUT",
       headers: {
@@ -33,6 +36,10 @@ const TaskItem: React.FC<TastItem> = ({ task: { id, isCheck, title } }) => {
       }
     });
   };
+  const handleClickDeleteBtn = () => {
+    setIsOpen(true)
+
+  }
   const handleClickDelete = () => {
     fetch(`/api/task/${id}`, {
       method: "DELETE",
@@ -44,11 +51,14 @@ const TaskItem: React.FC<TastItem> = ({ task: { id, isCheck, title } }) => {
       }
     });
   };
+  const handleClose = () => {
+    setIsOpen(false)
+  }
   return (
     <ListItem>
       <Checkbox
         checked={isCheck}
-        onChange={handleCheckChange}
+        onChange={handleCheck}
         color="primary"
       />
       <ListItemText
@@ -63,10 +73,26 @@ const TaskItem: React.FC<TastItem> = ({ task: { id, isCheck, title } }) => {
           padding: 0,
           cursor: "pointer",
         }}
-        onClick={handleClickDelete}
+        onClick={handleClickDeleteBtn}
       >
         <DeleteIcon />
       </Button>
+      <Dialog
+        open={isOpen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"삭제?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClickDelete}>삭제</Button>
+          <Button onClick={handleClose} autoFocus>
+            취소
+          </Button>
+        </DialogActions>
+      </Dialog>
     </ListItem>
   );
 };
