@@ -10,7 +10,6 @@ const handler = async (
   switch (req.method) {
     case "POST":
       console.log(req.body);
-      
       break;
     case "PUT":
       break;
