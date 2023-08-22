@@ -25,7 +25,6 @@ const TaskItem: React.FC<TastItem> = ({ task: { id, isCheck, title } }) => {
       },
       body: JSON.stringify({ isCheck: !isCheck }),
     }).then((e) => {
-      console.log("handleCheckChange");
 
       if (e.status === 200) {
         router.refresh();
@@ -38,7 +37,6 @@ const TaskItem: React.FC<TastItem> = ({ task: { id, isCheck, title } }) => {
     fetch(`/api/task/${id}`, {
       method: "DELETE",
     }).then((e) => {
-      console.log("handleClickDelete");
       if (e.status === 200) {
         router.refresh();
       } else {

@@ -31,14 +31,16 @@ import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  // const req = await request.json();
-  console.log(request);
+  const formData = await request.formData();
 
-  // const task: Task = { title: req.body.title, isCheck: false };
-  // const { db } = await connectToDatabase();
-  // const result = await db.collection("tasks").insertOne(task);
-  // const data = await res.json();
-  redirect("http://localhost:3000/tasks");
+  // console.log(formData.get('title'));
 
-  // return NextResponse.json({ req });
+  const task: Task = { title: formData.get("title") as string, isCheck: false };
+  const { db } = await connectToDatabase();
+  const result = await db.collection("tasks").insertOne(task);
+  if (result.acknowledged) {
+    return NextResponse.redirect("http://localhost:3000/tasks", 303);
+  } else {
+    return NextResponse.json({ error: "server error" }, { status: 500 });
+  }
 }
