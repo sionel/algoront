@@ -5,6 +5,7 @@ import {
   Button,
   Container,
   Divider,
+  IconButton,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -12,13 +13,13 @@ import { Post } from "../../../types/post";
 import { connectToDatabase } from "@/util/database";
 import { ObjectId } from "mongodb";
 import Baek1931 from "@/solutions/baek1931/Baek1931";
-import { EnhancedComponentA } from "@/solutions";
 import MarkDownPost from "@/components/MarkDownPost";
-import ProblemDescription from "./ProblemDescription";
-import CommentSection from "./CommentSection";
+import DescriptionSection from "./DescriptionSection";
+import CommentSection from "@/components/Comment";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Link from "next/link";
 
-const Solution = async ({params:{id}}: { params: { id: any } }) => {
-
+const Solution = async ({ params: { id } }: { params: { id: any } }) => {
   let { db } = await connectToDatabase();
   let question: any = await db
     .collection("question")
@@ -30,11 +31,17 @@ const Solution = async ({params:{id}}: { params: { id: any } }) => {
 
   return (
     <Container>
-      <ProblemDescription post={question.md} />
+      <Link href="/algorithm" passHref>
+        <IconButton edge="start" color="default" aria-label="뒤로가기">
+          <ArrowBackIcon />
+        </IconButton>
+      </Link>
+      <DescriptionSection post={question.md} />
       <Divider />
       <h2>풀이법</h2>
       <Divider />
       <CommentSection questionId={id} />
+
       {/* <Test11 problemId="123" /> */}
       {/* <EnhancedComponentA />
       <Baek1931 /> */}
