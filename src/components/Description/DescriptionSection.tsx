@@ -1,5 +1,5 @@
-import MarkDownPost from "@/components/MarkDownPost";
 import React from "react";
+import MarkDownPost from "../MarkDownPost";
 interface DescriptionSectionProps {
   post: string;
 }
