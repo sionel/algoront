@@ -10,14 +10,17 @@ import {
 } from "@mui/material";
 import React from "react";
 import { Post } from "../../../types/post";
-import { connectToDatabase } from "@/util/database";
+import { connectToDatabase, convertApiDataToClientData } from "@/util/database";
 import { ObjectId } from "mongodb";
 import Baek1931 from "@/solutions/baek1931/Baek1931";
 import MarkDownPost from "@/components/MarkDownPost";
-import DescriptionSection from "./DescriptionSection";
+
 import CommentSection from "@/components/Comment";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
+import SolutionSection from "@/solutions/SolutionSection";
+import DescriptionSection from "@/components/Description";
+import { ApiComment, ClientComment } from "@/types/comment";
 
 const Solution = async ({ params: { id } }: { params: { id: any } }) => {
   let { db } = await connectToDatabase();
@@ -28,9 +31,14 @@ const Solution = async ({ params: { id } }: { params: { id: any } }) => {
       e._id = e._id.toString();
       return e;
     });
+  let comments: ClientComment[] = await db
+    .collection<ApiComment>("comments")
+    .find({ questionId: id })
+    .toArray()
+    .then((list) => list.map((comment) => convertApiDataToClientData(comment)));
 
   return (
-    <Container>
+    <Container sx={{ maxWidth: 1200, minWidth: 800 }}>
       <Link href="/algorithm" passHref>
         <IconButton edge="start" color="default" aria-label="뒤로가기">
           <ArrowBackIcon />
@@ -38,9 +46,9 @@ const Solution = async ({ params: { id } }: { params: { id: any } }) => {
       </Link>
       <DescriptionSection post={question.md} />
       <Divider />
-      <h2>풀이법</h2>
+      <SolutionSection questionId={id} />
       <Divider />
-      <CommentSection questionId={id} />
+      <CommentSection comments={comments} />
 
       {/* <Test11 problemId="123" /> */}
       {/* <EnhancedComponentA />

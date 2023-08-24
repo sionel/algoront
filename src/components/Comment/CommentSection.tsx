@@ -1,24 +1,18 @@
 import React from "react";
 import CommentForm from "./CommentForm";
-import { Box } from "@mui/material";
-import { ApiComment, ClientComment } from "@/types/comment";
+import { Container } from "@mui/material";
+import { ClientComment } from "@/types/comment";
 import { connectToDatabase, convertApiDataToClientData } from "@/util/database";
 import CommentList from "./CommentList";
 
-const CommentSection = async ({ questionId }: { questionId: string }) => {
-  let { db } = await connectToDatabase();
-  let comments: ClientComment[] = await db
-    .collection<ApiComment>("comments")
-    .find({ questionId })
-    .toArray()
-    .then((list) => list.map((comment) => convertApiDataToClientData(comment)));
+const CommentSection = ({ comments }: { comments: ClientComment[] }) => {
 
   return (
-    <Box>
+    <Container>
       <h2>코멘트</h2>
       <CommentForm />
       <CommentList comments={comments} />
-    </Box>
+    </Container>
   );
 };
 
