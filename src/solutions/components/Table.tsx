@@ -34,6 +34,33 @@ export default function BasicTable() {
     [2, 13],
     [12, 14],
   ];
+  const focus = [];
+  const done = [];
+  const focusColNumber = () => {
+    return { color: "#f00", fontSize: 30 };
+  };
+  const getClassName = (row: number, col: number) => {
+    row--, col--;
+    if (row === -1 && col === -1) {
+      return getCornerCellClass();
+    } else if (row === -1) {
+      return getColumnCellClass(col);
+    } else if (col === -1) {
+      return getRowCellClass(row);
+    } else {
+      return getTableCellClass(row, col);
+    }
+  };
+  const getCornerCellClass = () => "default";
+  const getColumnCellClass = (col: number) => {
+    return "default selected";
+  };
+  const getRowCellClass = (row: number) => {
+    return "";
+  };
+  const getTableCellClass = (row: number, col: number) => {
+    return "selected";
+  };
   return (
     <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
       <Table sx={{ border: 1 }} aria-label="simple table">
@@ -43,11 +70,20 @@ export default function BasicTable() {
               .fill(0)
               .map((e, i) => {
                 return i ? (
-                  <TableCell key={i} align="left" sx={{ padding: 0 }}>
+                  <TableCell
+                    className={getClassName(0, i)}
+                    key={i}
+                    align="left"
+                    sx={{ padding: 0 }}
+                  >
                     {i - 1}
                   </TableCell>
                 ) : (
-                  <TableCell key={i} align="center">
+                  <TableCell
+                    key={i}
+                    className={getClassName(0, 0)}
+                    align="center"
+                  >
                     {"y\\x"}
                   </TableCell>
                 );
@@ -56,7 +92,6 @@ export default function BasicTable() {
         </TableHead>
         <TableBody>
           {data.map((row, i) => {
-            const [start, end] = row;
             return (
               <TableRow key={i}>
                 {Array(timeEnd + 1)
@@ -65,17 +100,24 @@ export default function BasicTable() {
                     return j ? (
                       <TableCell
                         align="center"
-                        className={`${
-                          start + 1 <= j && end + 1 > j ? "processing" : ""
-                        }`}
-                        sx={{
-                          bgcolor: "background.secondary",
-                        }}
+                        className={getClassName(i, j)}
+                        // className={`${
+                        //   start + 1 <= j && end + 1 > j
+                        //     ? "processing"
+                        //     : "default"
+                        // }`}
+                        // sx={{
+                        //   bgcolor: "background.secondary",
+                        // }}
                         color={"secondary"}
                         key={j}
                       ></TableCell>
                     ) : (
-                      <TableCell key={j} align="center">
+                      <TableCell
+                        className={getClassName(i, j)}
+                        key={j}
+                        align="center"
+                      >
                         {i}
                       </TableCell>
                     );

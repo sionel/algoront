@@ -8,38 +8,31 @@ import {
   Container,
   TextField,
   Paper,
+  Box,
 } from "@mui/material";
+import InputGrid from "../components/InputGrid";
+import Simulation from "./Simulation";
 
 const Baek1931 = () => {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-
-  const [isError, setIsError] = useState(false);
-  const handleChangeDataSet: React.ChangeEventHandler<HTMLTextAreaElement> = ({
-    target,
-  }) => {
-    setInput(target.value);
-  };
-  const handleClickRun = () => {
+  const [isError, setIsError] = useState(true);
+  const [data, setdata] = useState({})
+  const handleClickRun = (input: string) => {
     try {
-      const { count, times } = convertTextToDataset();
+      const { count, times } = convertTextToDataset(input);
       const result = solution(count, times);
-      setOutput(result+"");
+      setdata({count , times})
       setIsError(false);
+      return result + "";
     } catch (error) {
       setIsError(true);
-      setOutput("입력값이 잘못되었습니다.");
-
+      return "입력값이 잘못되었습니다.";
     }
   };
 
-  const convertTextToDataset = () => {
-    let count: number = 0;
-    let times: any[] = [];
+  const convertTextToDataset = (input: string) => {
     const dataset = input.trim().replaceAll("\r", "").split("\n");
-    
-    count = Number(dataset[0]);
-    console.log(dataset);
+    let count = Number(dataset[0]);
+    let times: any[] = [];
 
     if (count < 1 || count > 100000) throw "";
     for (let i = 1; i <= count; i++) {
@@ -60,40 +53,14 @@ const Baek1931 = () => {
         temp = end;
       }
     });
-    
+
     return result;
   };
   return (
     <Container>
-      <Grid container spacing={2} alignItems="center" mb={5}>
-        <Grid item xs={5}>
-          <TextField
-            id="outlined-multiline-static"
-            label="입력"
-            multiline
-            value={input}
-            fullWidth
-            onChange={handleChangeDataSet}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <Button onClick={handleClickRun} variant={"contained"} fullWidth>
-            실행
-          </Button>
-        </Grid>
-        <Grid item xs={5}>
-          <TextField
-            id="outlined-multiline-static"
-            label="출력"
-            disabled={true}
-            multiline
-            value={output}
-            fullWidth
-            
-          />
-        </Grid>
-      </Grid>
-      {isError ? <></> : <Table></Table>}
+      <InputGrid onClickRun={handleClickRun} />
+      <Simulation data={data} />
+      {/* {isError ? <Box>{""}</Box> : <Table></Table>} */}
     </Container>
   );
 };

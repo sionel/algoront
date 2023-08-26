@@ -1,7 +1,11 @@
 .default {
   background-color: #f7f7f7;
 }
+.default .selected {
+  color : #2962FF 
+}
 .selected {
+  color: #333333 ;
   background-color: #ddeeff;
 }
 .done {
