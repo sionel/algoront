@@ -10,7 +10,8 @@ import {
 const InputGrid: React.FC<{
   testcase: string;
   onClickRun: (input: string) => string;
-}> = ({ testcase, onClickRun }) => {
+  onClickList : () => void
+}> = ({ testcase, onClickRun,onClickList }) => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("0");
 
@@ -30,11 +31,11 @@ const InputGrid: React.FC<{
   return (
     <Container>
       <Grid container spacing={1} alignItems="center">
-        <Grid item xs={3}>
+        <Grid item>
           <h3>테스트케이스</h3>
         </Grid>
         <Grid item>
-          <IconButton color="primary" aria-label="목록 호출">
+          <IconButton color="primary" aria-label="목록 호출" onClick={onClickList}>
             <ListIcon />
           </IconButton>
         </Grid>
