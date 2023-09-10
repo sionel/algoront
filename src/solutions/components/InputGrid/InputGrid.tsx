@@ -1,46 +1,77 @@
-import { Button, Grid, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Container, IconButton, Button, Grid, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 
-const InputGrid: React.FC<{ onClickRun: (input: string) => string }> = ({ onClickRun }) => {
+import {
+  List as ListIcon,
+  Star as StarIcon,
+  PlayArrow as PlayArrowIcon,
+} from "@mui/icons-material";
+
+const InputGrid: React.FC<{
+  testcase: string;
+  onClickRun: (input: string) => string;
+}> = ({ testcase, onClickRun }) => {
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState("0");
+
+  useEffect(() => {
+    setInput(testcase);
+  }, [testcase]);
+
   const handleChangeDataSet: React.ChangeEventHandler<HTMLTextAreaElement> = ({
     target,
   }) => {
     setInput(target.value);
   };
   const handleClickRun = () => {
-    const result = onClickRun(input)
-    setOutput(result)
-  }
+    const result = onClickRun(input);
+    setOutput(result);
+  };
   return (
-    <Grid container spacing={2} alignItems="center" mb={5}>
-      <Grid item xs={5}>
-        <TextField
-          id="outlined-multiline-static"
-          label="입력"
-          multiline
-          value={input}
-          fullWidth
-          onChange={handleChangeDataSet}
-        />
+    <Container>
+      <Grid container spacing={1} alignItems="center">
+        <Grid item xs={3}>
+          <h3>테스트케이스</h3>
+        </Grid>
+        <Grid item>
+          <IconButton color="primary" aria-label="목록 호출">
+            <ListIcon />
+          </IconButton>
+        </Grid>
+        <Grid item>
+          <IconButton color="primary" aria-label="실행" onClick={handleClickRun}>
+            <PlayArrowIcon />
+          </IconButton>
+        </Grid>
+        <Grid item>
+          <IconButton aria-label="즐겨찾기">
+            <StarIcon />
+          </IconButton>
+        </Grid>
       </Grid>
-      <Grid item xs={2}>
-        <Button onClick={handleClickRun} variant={"contained"} fullWidth>
-          실행
-        </Button>
+      <Grid container spacing={2} alignItems="center" mb={5}>
+        <Grid item xs={5}>
+          <TextField
+            id="outlined-multiline-static"
+            label="입력"
+            multiline
+            value={input}
+            fullWidth
+            onChange={handleChangeDataSet}
+          />
+        </Grid>
+        <Grid item xs={5}>
+          <TextField
+            id="outlined-multiline-static"
+            label="출력"
+            disabled={true}
+            multiline
+            value={output}
+            fullWidth
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={5}>
-        <TextField
-          id="outlined-multiline-static"
-          label="출력"
-          disabled={true}
-          multiline
-          value={output}
-          fullWidth
-        />
-      </Grid>
-    </Grid>
+    </Container>
   );
 };
 

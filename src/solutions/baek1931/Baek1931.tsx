@@ -1,30 +1,42 @@
 "use client";
-import React, { useState } from "react";
-import Table from "../components/Table";
-import {
-  Grid,
-  Typography,
-  Button,
-  Container,
-  TextField,
-  Paper,
-  Box,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Container } from "@mui/material";
 import InputGrid from "../components/InputGrid";
 import Simulation from "./Simulation";
+import CaseDialog from "../components/CaseDialog";
 
 const Baek1931 = () => {
-  const [isError, setIsError] = useState(true);
-  const [data, setdata] = useState({})
+  const [open, setOpen] = useState(false);
+  const [data, setdata] = useState({});
+  const [testcase, setTestcase] = useState("");
+  
+
+  useEffect(() => {
+    getTestcase(1);
+  }, [testcase]);
+
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
+
+  const getTestcase = (index: number) => {
+    fetch(`/api/testcase/baek1931?index=1`, {
+      method: "GET",
+    })
+      .then((e) => e.json())
+      .then(({result}) => {
+        setTestcase(result.case as string)
+      });
+  };
+
   const handleClickRun = (input: string) => {
     try {
       const { count, times } = convertTextToDataset(input);
       const result = solution(count, times);
-      setdata({count , times})
-      setIsError(false);
+      setdata({ count, times });
       return result + "";
     } catch (error) {
-      setIsError(true);
       return "입력값이 잘못되었습니다.";
     }
   };
@@ -58,7 +70,8 @@ const Baek1931 = () => {
   };
   return (
     <Container>
-      <InputGrid onClickRun={handleClickRun} />
+      <CaseDialog open={open} onCloseDialog={handleCloseDialog} />
+      <InputGrid testcase={testcase} onClickRun={handleClickRun} />
       <Simulation data={data} />
       {/* {isError ? <Box>{""}</Box> : <Table></Table>} */}
     </Container>

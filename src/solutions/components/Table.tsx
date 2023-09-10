@@ -18,27 +18,25 @@ function createData(
   return { name, calories, fat, carbs, protein };
 }
 
-export default function BasicTable() {
-  const timeStart = 0;
-  const timeEnd = 15;
-  const data = [
-    [1, 4],
-    [3, 5],
-    [0, 6],
-    [5, 7],
-    [3, 8],
-    [5, 9],
-    [6, 10],
-    [8, 11],
-    [8, 12],
-    [2, 13],
-    [12, 14],
-  ];
-  const focus = [];
-  const done = [];
-  const focusColNumber = () => {
-    return { color: "#f00", fontSize: 30 };
-  };
+interface AlgorithmTableProps {
+  data : any[];
+  selected: number[];
+  done: number[];
+  processing: number[];
+  error: number[];
+  row: number;
+  column: number;
+}
+
+const AlgorithmTable: React.FC<AlgorithmTableProps> = ({
+  data,
+  done,
+  error,
+  processing,
+  selected,
+  column,
+  row
+}) => {  
   const getClassName = (row: number, col: number) => {
     row--, col--;
     if (row === -1 && col === -1) {
@@ -53,10 +51,10 @@ export default function BasicTable() {
   };
   const getCornerCellClass = () => "default";
   const getColumnCellClass = (col: number) => {
-    return "default selected";
+    return "default";
   };
   const getRowCellClass = (row: number) => {
-    return "";
+    return "default";
   };
   const getTableCellClass = (row: number, col: number) => {
     return "selected";
@@ -66,9 +64,9 @@ export default function BasicTable() {
       <Table sx={{ border: 1 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            {Array(timeEnd + 1)
+            {Array(column + 1)
               .fill(0)
-              .map((e, i) => {
+              .map((_, i) => {
                 return i ? (
                   <TableCell
                     className={getClassName(0, i)}
@@ -91,30 +89,22 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, i) => {
+          {data.map((_, i) => {
             return (
               <TableRow key={i}>
-                {Array(timeEnd + 1)
+                {Array(column + 1)
                   .fill(0)
                   .map((e, j) => {
                     return j ? (
                       <TableCell
                         align="center"
-                        className={getClassName(i, j)}
-                        // className={`${
-                        //   start + 1 <= j && end + 1 > j
-                        //     ? "processing"
-                        //     : "default"
-                        // }`}
-                        // sx={{
-                        //   bgcolor: "background.secondary",
-                        // }}
+                        className={getClassName(i + 1, j)}
                         color={"secondary"}
                         key={j}
                       ></TableCell>
                     ) : (
                       <TableCell
-                        className={getClassName(i, j)}
+                        className={getClassName(i + 1, j)}
                         key={j}
                         align="center"
                       >
@@ -129,4 +119,6 @@ export default function BasicTable() {
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default AlgorithmTable;
