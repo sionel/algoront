@@ -6,30 +6,20 @@ import Simulation from "./Simulation";
 import CaseDialog from "../components/CaseDialog";
 
 const Baek1931 = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [data, setdata] = useState({});
   const [testcase, setTestcase] = useState("");
-  
+
   useEffect(() => {
     getTestcase(1);
   }, [testcase]);
-
-
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
-  };
-  
-  const handleClickList = () => {
-    setDialogOpen(true);
-  }
 
   const getTestcase = (index: number) => {
     fetch(`/api/testcase/baek1931?index=1`, {
       method: "GET",
     })
       .then((e) => e.json())
-      .then(({result}) => {
-        setTestcase(result.case as string)
+      .then(({ result }) => {
+        setTestcase(result.case as string);
       });
   };
 
@@ -43,7 +33,6 @@ const Baek1931 = () => {
       return "입력값이 잘못되었습니다.";
     }
   };
-
 
   const convertTextToDataset = (input: string) => {
     const dataset = input.trim().replaceAll("\r", "").split("\n");
@@ -74,8 +63,11 @@ const Baek1931 = () => {
   };
   return (
     <Container>
-      <CaseDialog open={dialogOpen} onCloseDialog={handleCloseDialog} id={"beak1931"} />
-      <InputGrid testcase={testcase} onClickRun={handleClickRun} onClickList={handleClickList}/>
+      <InputGrid
+        questionId="baek1931"
+        testcase={testcase}
+        onClickRun={handleClickRun}
+      />
       <Simulation data={data} />
       {/* {isError ? <Box>{""}</Box> : <Table></Table>} */}
     </Container>

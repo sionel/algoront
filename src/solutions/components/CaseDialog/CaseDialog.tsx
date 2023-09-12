@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -24,13 +24,23 @@ interface CaseDialogProps {
 }
 
 const CaseDialog: React.FC<CaseDialogProps> = ({ open, onCloseDialog, id }) => {
+  const [list, setList] = useState([]);
 
-  const [dataList, setDataList] = useState([{
-    _id:'',
-    like:1,
-    case: JSON.stringify("29\n1 4\n3 5\n0 6\n5 7\n3 8\n5 9\n6 10\n8 11\n8 12\n2 13\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14\n12 14"),
-  },])
+  const getTestcases = (id: string) => {
+    fetch(`/api/testcase/${id}`)
+      .then((e) => e.json())
+      .then((e) => {
+        const list = e.result.map((e) => {
+          e.case = JSON.stringify(e.case);
+          return e;
+        });
+        setList(list);
+      });
+  };
 
+  useEffect(() => {
+    getTestcases(id);
+  }, [id]);
   const handleToggleLike = (id) => {
     // 좋아요 토글 로직
   };
@@ -39,7 +49,6 @@ const CaseDialog: React.FC<CaseDialogProps> = ({ open, onCloseDialog, id }) => {
     // 선택 버튼 클릭 로직
   };
 
-
   return (
     <Dialog open={open} onClose={onCloseDialog} maxWidth="md">
       <DialogTitle>케이스 목록</DialogTitle>
@@ -47,27 +56,31 @@ const CaseDialog: React.FC<CaseDialogProps> = ({ open, onCloseDialog, id }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{minWidth: 100}} >좋아요</TableCell>
-              <TableCell sx={{minWidth: 400}} >케이스</TableCell>
-              <TableCell sx={{minWidth: 100}} >좋아요 수</TableCell>
-              <TableCell sx={{minWidth: 100}} >선택</TableCell>
+              <TableCell align="center" sx={{ minWidth: 100 }}>
+                좋아요
+              </TableCell>
+              <TableCell align="center" sx={{ minWidth: 400 }}>
+                케이스
+              </TableCell>
+              <TableCell align="center" sx={{ minWidth: 100 }}>
+                선택
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataList.map((data) => (
+            {list.map((data) => (
               <TableRow key={data._id}>
                 <TableCell>
                   <IconButton onClick={() => handleToggleLike(data._id)}>
                     {data.like > 0 ? <StarIcon /> : <StarBorderIcon />}
                   </IconButton>
+                  {data.like}
                 </TableCell>
                 <TableCell>{data.case}</TableCell>
-                <TableCell>{data.like}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"
-                    onClick={() => handleSelect(data._id)}
-                  >
+                    onClick={() => handleSelect(data._id)}>
                     선택
                   </Button>
                 </TableCell>

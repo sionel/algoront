@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 const SolutionSection = ({ questionId }: { questionId: string }) => {
   const getSolutionById = () => {
     switch (questionId) {
-      case "baek_1931":
+      case "baek1931":
         return <Baek1931 />;
       default:
         return <Baek1931 />;
