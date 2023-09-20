@@ -16,6 +16,8 @@
     "@mui/material": "^5.14.4",
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/x-data-grid": "^6.11.1",
+    "@tanstack/react-query": "^4.35.3",
+    "@tanstack/react-query-devtools": "^4.35.3",
     "@types/node": "20.4.4",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
@@ -33,5 +35,8 @@
     "remark-gfm": "^3.0.1",
     "styled-components": "^5.3.11",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.34.1"
   }
 }

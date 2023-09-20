@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Drawer from "../components/Drawer";
 import Box from "@mui/material/Box";
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,25 +19,29 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const queryClient = new QueryClient()
+
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={inter.className}>
-        <ThemeRegistry>
-          <Header />
-          <Drawer />
-          <Box
-            component="main"
-            sx={{
-              flexGrow: 1,
-              bgcolor: "background.default",
-              ml: "240px",
-              mt: "64px",
-              p: 3,
-            }}
-          >
-            {children}
-          </Box>
-        </ThemeRegistry>
+        <QueryClientProvider client={queryClient}>
+          <ThemeRegistry>
+            <Header />
+            <Drawer />
+            <Box
+              component="main"
+              sx={{
+                flexGrow: 1,
+                bgcolor: "background.default",
+                ml: "240px",
+                mt: "64px",
+                p: 3,
+              }}
+            >
+              {children}
+            </Box>
+          </ThemeRegistry>
+        </QueryClientProvider>
       </body>
     </html>
   );
