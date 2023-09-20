@@ -40,11 +40,9 @@ const InputGrid: React.FC<{
   };
   return (
     <Container>
-      <CaseDialog
-        open={dialogOpen}
-        onCloseDialog={handleCloseDialog}
-        id={"baek1931"}
-      />
+      {dialogOpen && (
+        <CaseDialog onCloseDialog={handleCloseDialog} id={"baek1931"} />
+      )}
       <Grid container spacing={1} alignItems="center">
         <Grid item>
           <h3>테스트케이스</h3>

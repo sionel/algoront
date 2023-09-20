@@ -19,7 +19,7 @@ function createData(
 }
 
 interface AlgorithmTableProps {
-  data : any[];
+  data: any[];
   selected: number[];
   done: number[];
   processing: number[];
@@ -35,8 +35,8 @@ const AlgorithmTable: React.FC<AlgorithmTableProps> = ({
   processing,
   selected,
   column,
-  row
-}) => {  
+  row,
+}) => {
   const getClassName = (row: number, col: number) => {
     row--, col--;
     if (row === -1 && col === -1) {
@@ -72,16 +72,14 @@ const AlgorithmTable: React.FC<AlgorithmTableProps> = ({
                     className={getClassName(0, i)}
                     key={i}
                     align="left"
-                    sx={{ padding: 0 }}
-                  >
+                    sx={{ padding: 0 }}>
                     {i - 1}
                   </TableCell>
                 ) : (
                   <TableCell
                     key={i}
                     className={getClassName(0, 0)}
-                    align="center"
-                  >
+                    align="center">
                     {"y\\x"}
                   </TableCell>
                 );
@@ -100,14 +98,12 @@ const AlgorithmTable: React.FC<AlgorithmTableProps> = ({
                         align="center"
                         className={getClassName(i + 1, j)}
                         color={"secondary"}
-                        key={j}
-                      ></TableCell>
+                        key={j}></TableCell>
                     ) : (
                       <TableCell
                         className={getClassName(i + 1, j)}
                         key={j}
-                        align="center"
-                      >
+                        align="center">
                         {i}
                       </TableCell>
                     );

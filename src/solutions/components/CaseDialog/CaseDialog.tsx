@@ -16,30 +16,25 @@ import {
   Star as StarIcon,
   StarBorder as StarBorderIcon,
 } from "@mui/icons-material";
+import { ApiTestcase, ClientTestcase, Testcase } from "@/types";
+import { convertApiDataToClientData } from "@/util/database";
 
 interface CaseDialogProps {
-  open: boolean;
   onCloseDialog: () => void;
   id: string;
 }
 
-const CaseDialog: React.FC<CaseDialogProps> = ({ open, onCloseDialog, id }) => {
-  const [list, setList] = useState([]);
+const CaseDialog: React.FC<CaseDialogProps> = ({ onCloseDialog, id }) => {
+  const [list, setList] = useState<ClientTestcase[]>();
 
-  const getTestcases = (id: string) => {
+  const getTestcaseList = (id: string) => {
     fetch(`/api/testcase/${id}`)
       .then((e) => e.json())
-      .then((e) => {
-        const list = e.result.map((e) => {
-          e.case = JSON.stringify(e.case);
-          return e;
-        });
-        setList(list);
-      });
+      .then((data: ClientTestcase[]) => setList(data));
   };
 
   useEffect(() => {
-    getTestcases(id);
+    getTestcaseList(id);
   }, [id]);
   const handleToggleLike = (id) => {
     // 좋아요 토글 로직
@@ -50,7 +45,7 @@ const CaseDialog: React.FC<CaseDialogProps> = ({ open, onCloseDialog, id }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onCloseDialog} maxWidth="md">
+    <Dialog open={true} onClose={onCloseDialog} maxWidth="md">
       <DialogTitle>케이스 목록</DialogTitle>
       <DialogContent>
         <Table>

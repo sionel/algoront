@@ -1,5 +1,5 @@
 import { ApiData, ClientData } from "@/types";
-import { MongoClient, Db, ObjectId } from "mongodb";
+import { MongoClient, Db } from "mongodb";
 
 const url = process.env.DATABASE_URI as string;
 const dbName = process.env.DATABASE_NAME as string;
