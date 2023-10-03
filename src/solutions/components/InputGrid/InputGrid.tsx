@@ -12,6 +12,7 @@ const InputGrid: React.FC<{
   questionId: string;
   testcase: string;
   onClickRun: (input: string) => string;
+  solution:()=>void
 }> = ({ questionId, testcase, onClickRun }) => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("0");

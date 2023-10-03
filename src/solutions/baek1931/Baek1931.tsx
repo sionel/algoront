@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import InputGrid from "../components/InputGrid";
 import Simulation from "./Simulation";
-import CaseDialog from "../components/CaseDialog";
+import { SHA256 } from "crypto-js";
 
 const Baek1931 = () => {
   const [data, setdata] = useState({});
@@ -14,19 +14,27 @@ const Baek1931 = () => {
   }, [testcase]);
 
   const getTestcase = (index: number) => {
-    fetch(`/api/testcase/baek1931?index=1`, {
+    fetch(`/api/testcase/baek1931`, {
       method: "GET",
     })
       .then((e) => e.json())
-      .then(({ result }) => {
-        setTestcase(result.case as string);
+      .then((list) => {
+        setTestcase(list[0].case);
       });
   };
 
   const handleClickRun = (input: string) => {
     try {
-      const { count, times } = convertTextToDataset(input);
+      input = input
+        .trim()
+        .split("\n")
+        .map((e) => e.trim())
+        .join("\n");
+      setTestcase(input);
+      const { count, times } = convertInputToDataset(input);
       const result = solution(count, times);
+
+      storeData(input);
       setdata({ count, times });
       return result + "";
     } catch (error) {
@@ -34,8 +42,14 @@ const Baek1931 = () => {
     }
   };
 
-  const convertTextToDataset = (input: string) => {
-    const dataset = input.trim().replaceAll("\r", "").split("\n");
+  const storeData = (input: string) => {
+    const hash = SHA256(input).toString();
+    console.log(hash);
+    
+  };
+
+  const convertInputToDataset = (input: string) => {
+    const dataset = input.split("\n");
     let count = Number(dataset[0]);
     let times: any[] = [];
 
@@ -51,13 +65,14 @@ const Baek1931 = () => {
     times.sort((a, b) => (a[1] === b[1] ? a[0] - b[0] : a[1] - b[1]));
     let temp = 0;
     let result = 0;
-    times.forEach((e) => {
-      const [start, end] = e;
+
+    for (let i = 0; i < count; i++) {
+      const [start, end] = times[i];
       if (temp <= start) {
         result++;
         temp = end;
       }
-    });
+    }
 
     return result;
   };
@@ -67,6 +82,7 @@ const Baek1931 = () => {
         questionId="baek1931"
         testcase={testcase}
         onClickRun={handleClickRun}
+        solution={solution}
       />
       <Simulation data={data} />
       {/* {isError ? <Box>{""}</Box> : <Table></Table>} */}

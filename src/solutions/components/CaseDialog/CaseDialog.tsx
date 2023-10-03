@@ -25,12 +25,13 @@ interface CaseDialogProps {
 }
 
 const CaseDialog: React.FC<CaseDialogProps> = ({ onCloseDialog, id }) => {
-  const [list, setList] = useState<ClientTestcase[]>();
+  const [list, setList] = useState<ClientTestcase[]>([]);
 
   const getTestcaseList = (id: string) => {
+    
     fetch(`/api/testcase/${id}`)
       .then((e) => e.json())
-      .then((data: ClientTestcase[]) => setList(data));
+      .then(setList);
   };
 
   useEffect(() => {
@@ -64,9 +65,9 @@ const CaseDialog: React.FC<CaseDialogProps> = ({ onCloseDialog, id }) => {
           </TableHead>
           <TableBody>
             {list.map((data) => (
-              <TableRow key={data._id}>
+              <TableRow key={data.id}>
                 <TableCell>
-                  <IconButton onClick={() => handleToggleLike(data._id)}>
+                  <IconButton onClick={() => handleToggleLike(data.id)}>
                     {data.like > 0 ? <StarIcon /> : <StarBorderIcon />}
                   </IconButton>
                   {data.like}
@@ -75,7 +76,7 @@ const CaseDialog: React.FC<CaseDialogProps> = ({ onCloseDialog, id }) => {
                 <TableCell>
                   <Button
                     variant="contained"
-                    onClick={() => handleSelect(data._id)}>
+                    onClick={() => handleSelect(data.id)}>
                     선택
                   </Button>
                 </TableCell>

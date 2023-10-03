@@ -20,9 +20,8 @@ export async function GET(
 
   if (result) {
     const testcaseList = result.map((e) => {
-      e.case = JSON.stringify(e.case);
       return convertApiDataToClientData<Testcase>(e);
-    });
+    });    
     return NextResponse.json(testcaseList, { status: 200 });
   } else {
     return NextResponse.json({ error: "server error" }, { status: 500 });

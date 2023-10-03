@@ -26,7 +26,6 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <ReactQueryPvorider>
-          {/* <QueryClientProvider client={queryClient}> */}
           <ThemeRegistry>
             <Header />
             <Drawer />
@@ -43,7 +42,6 @@ export default function RootLayout({
               {children}
             </Box>
           </ThemeRegistry>
-          {/* </QueryClientProvider> */}
         </ReactQueryPvorider>
       </body>
     </html>
