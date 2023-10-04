@@ -5,8 +5,8 @@ import Header from "../components/Header";
 import Drawer from "../components/Drawer";
 import Box from "@mui/material/Box";
 import ThemeRegistry from "@/components/ThemeRegistry/ThemeRegistry";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ReactQueryPvorider from "@/util/provider/ReactQueryProvider";
+import { QueryClient } from "@tanstack/react-query";
+import { ReactQueryProvider } from "@/util/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={inter.className}>
-        <ReactQueryPvorider>
+        <ReactQueryProvider>
           <ThemeRegistry>
             <Header />
             <Drawer />
@@ -37,12 +37,11 @@ export default function RootLayout({
                 ml: "240px",
                 mt: "64px",
                 p: 3,
-              }}
-            >
+              }}>
               {children}
             </Box>
           </ThemeRegistry>
-        </ReactQueryPvorider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
