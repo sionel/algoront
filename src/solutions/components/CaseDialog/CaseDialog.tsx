@@ -21,27 +21,36 @@ import { convertApiDataToClientData } from "@/util/database";
 
 interface CaseDialogProps {
   onCloseDialog: () => void;
-  id: string;
+  questionId: string;
+  testcaseList: undefined | ClientTestcase[];
 }
 
-const CaseDialog: React.FC<CaseDialogProps> = ({ onCloseDialog, id }) => {
-  const [list, setList] = useState<ClientTestcase[]>([]);
+const CaseDialog: React.FC<CaseDialogProps> = ({
+  onCloseDialog,
+  questionId,
+  testcaseList,
+}) => {
+  // const [list, setList] = useState<ClientTestcase[]>([]);
 
-  const getTestcaseList = (id: string) => {
-    
-    fetch(`/api/testcase/${id}`)
-      .then((e) => e.json())
-      .then(setList);
+  const getTestcase = () =>
+    fetch(`/api/testcase/${questionId}/like`, {
+      method: "PUT",
+    });
+
+  // useEffect(() => {
+  //   getTestcaseList(id);
+  // }, [id]);
+  const handleToggleLike = (id: string) => {
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append("id", id);
+    fetch(`/api/testcase/${questionId}/like`, {
+      method: "PUT",
+      body: formData,
+    });
   };
 
-  useEffect(() => {
-    getTestcaseList(id);
-  }, [id]);
-  const handleToggleLike = (id) => {
-    // 좋아요 토글 로직
-  };
-
-  const handleSelect = (id) => {
+  const handleSelect = (id: string) => {
     // 선택 버튼 클릭 로직
   };
 
@@ -64,7 +73,7 @@ const CaseDialog: React.FC<CaseDialogProps> = ({ onCloseDialog, id }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {list.map((data) => (
+            {testcaseList?.map((data) => (
               <TableRow key={data.id}>
                 <TableCell>
                   <IconButton onClick={() => handleToggleLike(data.id)}>

@@ -7,20 +7,33 @@ import {
   PlayArrow as PlayArrowIcon,
 } from "@mui/icons-material";
 import CaseDialog from "../CaseDialog";
+import { useQuery } from "@tanstack/react-query";
+import { ClientTestcase } from "@/types";
 
 const InputGrid: React.FC<{
   questionId: string;
-  testcase: string;
-  onClickRun: (input: string) => string;
-  solution:()=>void
-}> = ({ questionId, testcase, onClickRun }) => {
+  solution: (input: string) => any;
+  setData: (data: any) => void;
+}> = ({ questionId, setData, solution }) => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("0");
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const getTestcase = () =>
+    fetch(`/api/testcase/${questionId}`, {
+      method: "GET",
+    })
+      .then((e) => e.json())
+      .then((list) => list);
+
+  const { data, isError } = useQuery<ClientTestcase[]>({
+    queryKey: ["testcase-list", questionId],
+    queryFn: getTestcase,
+  });
+
   useEffect(() => {
-    setInput(testcase);
-  }, [testcase]);
+    if (data) setInput(data[0].case);
+  }, [data]);
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
@@ -36,13 +49,23 @@ const InputGrid: React.FC<{
     setInput(target.value);
   };
   const handleClickRun = () => {
-    const result = onClickRun(input);
+    const trimmedInput = input
+      .trim()
+      .split("\n")
+      .map((e) => e.trim())
+      .join("\n");
+
+    const result = solution(trimmedInput);
     setOutput(result);
   };
   return (
     <Container>
       {dialogOpen && (
-        <CaseDialog onCloseDialog={handleCloseDialog} id={"baek1931"} />
+        <CaseDialog
+          onCloseDialog={handleCloseDialog}
+          questionId={questionId}
+          testcaseList={data}
+        />
       )}
       <Grid container spacing={1} alignItems="center">
         <Grid item>
@@ -70,7 +93,6 @@ const InputGrid: React.FC<{
           </IconButton>
         </Grid>
       </Grid>
-      {/* <Grid container spacing={2} alignItems="center" mb={5}> */}
       <Grid item xs={5}>
         <TextField
           id="outlined-multiline-static"
@@ -82,7 +104,6 @@ const InputGrid: React.FC<{
           maxRows={10}
         />
       </Grid>
-      {/* </Grid> */}
 
       <Grid item xs={5} sx={{ marginTop: 5, marginBottom: 5 }}>
         <TextField
