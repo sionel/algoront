@@ -1,30 +1,35 @@
 import { Container, IconButton, Button, Grid, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-
 import {
   List as ListIcon,
   Star as StarIcon,
+  StarBorder as StarBorderIcon,
   PlayArrow as PlayArrowIcon,
 } from "@mui/icons-material";
 import CaseDialog from "../CaseDialog";
 import { useQuery } from "@tanstack/react-query";
 import { ClientTestcase } from "@/types";
+import { getLocalStorageItem } from "@/util/localStorage";
 
 const InputGrid: React.FC<{
   questionId: string;
   solution: (input: string) => any;
   setData: (data: any) => void;
 }> = ({ questionId, setData, solution }) => {
+  const [localStorageItem, setLocalStorageItem] = useState<any>({});
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("0");
   const [dialogOpen, setDialogOpen] = useState(false);
-
+  const [likeFlag, setLikeFlag] = useState(false);
   const getTestcase = () =>
     fetch(`/api/testcase/${questionId}`, {
       method: "GET",
     })
       .then((e) => e.json())
-      .then((list) => list);
+      .then((list) => {
+        console.log(list);
+        return list;
+      });
 
   const { data, isError } = useQuery<ClientTestcase[]>({
     queryKey: ["testcase-list", questionId],
@@ -32,11 +37,17 @@ const InputGrid: React.FC<{
   });
 
   useEffect(() => {
+    const localStorageItem = getLocalStorageItem(questionId);
+    setLocalStorageItem(localStorageItem);
+  }, [questionId]);
+
+  useEffect(() => {
     if (data) setInput(data[0].case);
   }, [data]);
 
-  const handleCloseDialog = () => {
+  const handleCloseDialog = (id: number) => {
     setDialogOpen(false);
+    data && id !== -1 && setInput(data[id].case);
   };
 
   const handleClickList = () => {
@@ -58,6 +69,8 @@ const InputGrid: React.FC<{
     const result = solution(trimmedInput);
     setOutput(result);
   };
+
+  const handleClickLike = () => {};
   return (
     <Container>
       {dialogOpen && (
@@ -88,8 +101,8 @@ const InputGrid: React.FC<{
           </IconButton>
         </Grid>
         <Grid item>
-          <IconButton aria-label="즐겨찾기">
-            <StarIcon />
+          <IconButton aria-label="좋아요" onClick={handleClickLike}>
+            {!likeFlag ? <StarIcon color="warning" /> : <StarBorderIcon />}
           </IconButton>
         </Grid>
       </Grid>

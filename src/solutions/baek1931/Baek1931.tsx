@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import InputGrid from "../components/InputGrid";
 import Simulation from "./Simulation";
+import { getLocalStorageItem } from "@/util/localStorage";
 // import { SHA256 } from "crypto-js";
 
 const Baek1931 = () => {
@@ -16,7 +17,7 @@ const Baek1931 = () => {
 
       if (count < 1 || count > 100000) throw "";
       for (let i = 1; i <= count; i++) {
-        const [start, end] = dataset[i].split(" ");
+        const [start, end] = dataset[i].split(" ").map(Number);
         times.push([start, end]);
       }
       return { count, times };
@@ -25,6 +26,7 @@ const Baek1931 = () => {
     const { count, times } = convertInputToDataset(input);
 
     times.sort((a, b) => (a[1] === b[1] ? a[0] - b[0] : a[1] - b[1]));
+
     let temp = 0;
     let result = 0;
 
@@ -41,7 +43,7 @@ const Baek1931 = () => {
   return (
     <Container>
       <InputGrid questionId="baek1931" setData={setData} solution={solution} />
-      <Simulation data={data} />
+      {/* <Simulation data={data} /> */}
       {/* {isError ? <Box>{""}</Box> : <Table></Table>} */}
     </Container>
   );

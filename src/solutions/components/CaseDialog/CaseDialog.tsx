@@ -20,7 +20,7 @@ import { ApiTestcase, ClientTestcase, Testcase } from "@/types";
 import { convertApiDataToClientData } from "@/util/database";
 
 interface CaseDialogProps {
-  onCloseDialog: () => void;
+  onCloseDialog: (id: number) => void;
   questionId: string;
   testcaseList: undefined | ClientTestcase[];
 }
@@ -30,16 +30,11 @@ const CaseDialog: React.FC<CaseDialogProps> = ({
   questionId,
   testcaseList,
 }) => {
-  // const [list, setList] = useState<ClientTestcase[]>([]);
-
   const getTestcase = () =>
     fetch(`/api/testcase/${questionId}/like`, {
       method: "PUT",
     });
 
-  // useEffect(() => {
-  //   getTestcaseList(id);
-  // }, [id]);
   const handleToggleLike = (id: string) => {
     // FormData 객체 생성
     const formData = new FormData();
@@ -50,12 +45,18 @@ const CaseDialog: React.FC<CaseDialogProps> = ({
     });
   };
 
-  const handleSelect = (id: string) => {
-    // 선택 버튼 클릭 로직
+  const handleSelect = (id: number) => {
+    console.log(id);
+    onCloseDialog(id);
   };
 
   return (
-    <Dialog open={true} onClose={onCloseDialog} maxWidth="md">
+    <Dialog
+      open={true}
+      onClose={() => onCloseDialog(-1)}
+      maxWidth="md"
+      scroll="paper"
+      sx={{ marginTop: 5 }}>
       <DialogTitle>케이스 목록</DialogTitle>
       <DialogContent>
         <Table>
@@ -73,19 +74,12 @@ const CaseDialog: React.FC<CaseDialogProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {testcaseList?.map((data) => (
+            {testcaseList?.map((data, idx) => (
               <TableRow key={data.id}>
+                <TableCell align="center">{data.like}</TableCell>
+                <TableCell align="left">{JSON.stringify(data.case)}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => handleToggleLike(data.id)}>
-                    {data.like > 0 ? <StarIcon /> : <StarBorderIcon />}
-                  </IconButton>
-                  {data.like}
-                </TableCell>
-                <TableCell>{data.case}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    onClick={() => handleSelect(data.id)}>
+                  <Button variant="contained" onClick={() => handleSelect(idx)}>
                     선택
                   </Button>
                 </TableCell>
