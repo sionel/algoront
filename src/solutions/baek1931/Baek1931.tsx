@@ -8,7 +8,7 @@ import { getLocalStorageItem } from "@/util/localStorage";
 
 const Baek1931 = () => {
   const [data, setData] = useState({});
-
+  //test
   const solution = (input: string) => {
     const convertInputToDataset = (input: string) => {
       const dataset = input.split("\n");
