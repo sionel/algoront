@@ -35,7 +35,7 @@ const Solution = async ({ params: { id } }: { params: { id: any } }) => {
     .collection<ApiComment>("comments")
     .find({ questionId: id })
     .toArray()
-    .then((list) => list.map((comment) => convertApiDataToClientData(comment)));
+    .then((list) => list.map(convertApiDataToClientData));
 
   return (
     <Container sx={{ maxWidth: 1200, minWidth: 800 }}>
