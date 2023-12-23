@@ -1,5 +1,5 @@
 "use client";
-import { ClientComment } from "@/types/comment";
+import { ClientComment } from "@/types/database/comment";
 import {
   Button,
   Card,

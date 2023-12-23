@@ -1,4 +1,4 @@
-import { ApiData, ClientData } from ".";
+import { ApiData, ClientData } from "..";
 
 export type Testcase = {
   case: string;

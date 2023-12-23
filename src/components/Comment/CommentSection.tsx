@@ -1,7 +1,7 @@
 import React from "react";
 import CommentForm from "./CommentForm";
 import { Container } from "@mui/material";
-import { ClientComment } from "@/types/comment";
+import { ClientComment } from "@/types/database/comment";
 import { connectToDatabase, convertApiDataToClientData } from "@/util/database";
 import CommentList from "./CommentList";
 

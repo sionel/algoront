@@ -13,7 +13,7 @@ import {
   Box,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { ClientPost, Post } from "../../types/post";
+import { ClientPost, Post } from "../../types/database/post";
 
 interface BoardProps {
   posts: ClientPost[];

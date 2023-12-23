@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { Post } from "../../../types/post";
+import { Post } from "../../../types/database/post";
 import { connectToDatabase, convertApiDataToClientData } from "@/util/database";
 import { ObjectId } from "mongodb";
 import Baek1931 from "@/solutions/baek1931/Baek1931";
@@ -20,7 +20,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Link from "next/link";
 import SolutionSection from "@/solutions/SolutionSection";
 import DescriptionSection from "@/components/Description";
-import { ApiComment, ClientComment } from "@/types/comment";
+import { ApiComment, ClientComment } from "@/types/database/comment";
 
 const Solution = async ({ params: { id } }: { params: { id: any } }) => {
   let { db } = await connectToDatabase();

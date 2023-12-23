@@ -1,5 +1,5 @@
 import { Task } from "@/types";
-import { Comment } from "@/types/comment";
+import { Comment } from "@/types/database/comment";
 import { connectToDatabase } from "@/util/database";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";

@@ -1,5 +1,5 @@
 import { Task } from "@/types";
-import { Comment } from "@/types/comment";
+import { Comment } from "@/types/database/comment";
 import { connectToDatabase } from "@/util/database";
 import { ObjectId } from "mongodb";
 import { redirect } from "next/navigation";

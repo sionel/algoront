@@ -1,6 +1,6 @@
 import React from "react";
 import Comment from "./Comment";
-import { ClientComment } from "@/types/comment";
+import { ClientComment } from "@/types/database/comment";
 interface CommentList {
   comments: ClientComment[];
 }

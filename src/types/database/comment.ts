@@ -1,4 +1,4 @@
-import { ApiData, ClientData } from ".";
+import { ApiData, ClientData } from "..";
 
 export type Comment = {
   questionId: string;
