@@ -22,8 +22,6 @@ export const connectToDatabase = async () => {
       db: db,
     };
 
-    setCollection(db);
-
     return cachedClient;
   } catch (err) {
     console.error("MongoDB 연결 오류:", err);
@@ -31,14 +29,15 @@ export const connectToDatabase = async () => {
   }
 };
 
-const setCollection = (db: Db) => {
+export const getCollections = async () => {
+  const {db} = await connectToDatabase();
   const commentsName = process.env.COMMENTS_COLLECTION_NAME ?? "";
   const markdownsName = process.env.MARKDOWNS_COLLECTION_NAME ?? "";
   const postsName = process.env.POSTS_COLLECTION_NAME ?? "";
   const questionsName = process.env.QUESTIONS_COLLECTION_NAME ?? "";
   const tasksName = process.env.TASKS_COLLECTION_NAME ?? "";
   const testcasesName = process.env.TESTCASES_COLLECTION_NAME ?? "";
-  const visitName = process.env.VISIT_COLLECTION_NAME ?? "";
+  const accessStatsName = process.env.ACCESSSTATS_COLLECTION_NAME ?? "";
 
   const commentsCollection: Collection = db.collection(commentsName);
   const markdownsCollection: Collection = db.collection(markdownsName);
@@ -46,15 +45,17 @@ const setCollection = (db: Db) => {
   const questionsCollection: Collection = db.collection(questionsName);
   const tasksCollection: Collection = db.collection(tasksName);
   const testcasesCollection: Collection = db.collection(testcasesName);
-  const visitCollection: Collection = db.collection(visitName);
+  const accessStatsCollection: Collection = db.collection(accessStatsName);
 
+  const collections: Record<string, Collection> = {};
   collections.comments = commentsCollection;
   collections.markdowns = markdownsCollection;
   collections.posts = postsCollection;
   collections.questions = questionsCollection;
   collections.tasks = tasksCollection;
   collections.testcases = testcasesCollection;
-  collections.visit = visitCollection;
+  collections.accessStats = accessStatsCollection;
+  return collections;
 };
 
 export const convertApiDataToClientData = <T>(
@@ -63,13 +64,3 @@ export const convertApiDataToClientData = <T>(
   const { _id, ...rest } = apiData;
   return { ...rest, id: String(_id) };
 };
-
-export const collections: {
-  comments?: Collection;
-  markdowns?: Collection;
-  posts?: Collection;
-  questions?: Collection;
-  tasks?: Collection;
-  testcases?: Collection;
-  visit?: Collection;
-} = {};
