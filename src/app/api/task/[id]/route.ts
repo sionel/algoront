@@ -1,6 +1,6 @@
 import { Task } from "@/types";
-import { connectToDatabase } from "@/util/database";
-import { ObjectId } from "mongodb";
+import { collections, connectToDatabase } from "@/util/database";
+import { Collection, ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
@@ -10,9 +10,9 @@ export async function PUT(
 ) {
   const { isCheck } = await request.json();
 
-  const { db } = await connectToDatabase();
-  const taskCollection = await db.collection("tasks");
-  const result = await taskCollection.updateOne(
+  const tasksCollection = (collections.tasks as Collection)
+
+  const result = await tasksCollection.updateOne(
     { _id: new ObjectId(id) }, // Filter by _id
     {
       $set: {
@@ -31,9 +31,8 @@ export async function DELETE(
   request: Request,
   { params: { id } }: { params: { id: string } }
 ) {
-  const { db } = await connectToDatabase();
-  const taskCollection = await db.collection("tasks");
-  const result = await taskCollection.deleteOne({ _id: new ObjectId(id) });
+  const tasksCollection = (collections.tasks as Collection)
+  const result = await tasksCollection.deleteOne({ _id: new ObjectId(id) });
   if (result.acknowledged) {
     return NextResponse.json({ result: "success" }, { status: 200 });
   } else {

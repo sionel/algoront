@@ -1,16 +1,17 @@
 import { Task } from "@/types";
-import { connectToDatabase } from "@/util/database";
+import { collections, connectToDatabase } from "@/util/database";
+import { Collection } from "mongodb";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const formData = await request.formData();
 
-  // console.log(formData.get('title'));
-
   const task: Task = { title: formData.get("title") as string, isCheck: false };
-  const { db } = await connectToDatabase();
-  const result = await db.collection("tasks").insertOne(task);
+  
+  const tasksCollection = (collections.tasks as Collection)
+  const result = await tasksCollection.insertOne(task);
+  
   if (result.acknowledged) {
     return NextResponse.redirect("http://localhost:3000/tasks", 303);
   } else {

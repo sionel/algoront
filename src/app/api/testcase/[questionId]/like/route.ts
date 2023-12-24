@@ -1,6 +1,6 @@
 import { ApiTestcase, Task, Testcase } from "@/types";
-import { connectToDatabase, convertApiDataToClientData } from "@/util/database";
-import { ObjectId } from "mongodb";
+import { collections, connectToDatabase, convertApiDataToClientData } from "@/util/database";
+import { Collection, ObjectId } from "mongodb";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
@@ -13,8 +13,8 @@ export async function PUT(
     const id = formData.get("id") as string;
 
     const { db } = await connectToDatabase();
-    const testcasesCollection = await db.collection("testcases");
-
+    const testcasesCollection = collections.testcases as Collection
+    
     const query = { _id: new ObjectId(id) }; // 문서를 찾기 위한 조건
     const update = {
       $inc: {

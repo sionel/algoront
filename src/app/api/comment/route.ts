@@ -1,6 +1,7 @@
 import { Task } from "@/types";
 import { Comment } from "@/types/database/comment";
-import { connectToDatabase } from "@/util/database";
+import { collections, connectToDatabase } from "@/util/database";
+import { Collection } from "mongodb";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
@@ -13,8 +14,9 @@ export async function POST(request: Request) {
     password,
     text,
   };
-  const { db } = await connectToDatabase();
-  const result = await db.collection("comments").insertOne(comment);
+  const commentsCollection = (collections.tasks as Collection)
+  const result = await commentsCollection.insertOne(comment);
+  
   if (result.acknowledged) {
     return NextResponse.json({ success: "success" }, { status: 200 });
   } else {
