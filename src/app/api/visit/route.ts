@@ -35,7 +35,6 @@ export async function PUT(request: Request) {
       const result = await accessStats.updateOne(query, update);
       console.log(result);
       if (result.acknowledged) {
-        // return NextResponse.json(result, { status: 200, headers: newHeaders });
         return NextResponse.json(result, { status: 200, headers });
       } else {
         return NextResponse.json({ error: "server error" }, { status: 500 });
